@@ -85,6 +85,36 @@ cat /var/log/nginx/access.log | awk 'BEGIN {print "№  ip  -HTTP 404 WHANT TO F
 [root@linuxbash vagrant]#
 ```
 
+> **2 - скорость ответа, выявление быстрых - медленных запросов/**
+Отчет строиться по возрастанию ответа от сервера, самые быстрые ответы вверху, самые медленные ответы внизу.
+```php
+cat /var/log/nginx/access.log | awk 'BEGIN {print "Query request time"} $25>0.000 {print $25}' | sort |  uniq |  cat -n
+```
+> **Результат**
+```php
+[root@linuxbash vagrant]# cat /var/log/nginx/access.log | awk '$25>0.000 {print $25}' | sort |  uniq | awk 'BEGIN {print "Query request time"} {print NR " " $0}'
+Query request time
+1 0.001
+2 0.021
+3 0.400
+[root@linuxbash vagrant]#
+```
+> **3 Количество запросов от ip-адресов.**
+ Анализ `ip`-адресов и количества запросов от них - количество запросов и `ip`-адрес.
+Результат будет упорядочен по убыванию запросов, самый активный `ip`-адрес будет на самом верху. 
+```php
+cat /var/log/nginx/access.log |  awk '{print $1}' | sort | uniq -c | sort -nr
+```
+> **Результат**
+```php
+[root@linuxbash vagrant]# cat /var/log/nginx/access.log |  awk '{print $1}' | sort | uniq -c | sort -nr | awk 'BEGIN {print "Quantity queries from ip addresses"} {print $0}'
+Quantity queries from ip addresses
+     31 10.10.11.20
+     19 10.10.11.21
+      2 10.10.11.22
+[root@linuxbash vagrant]#
+```
+
 
 ---
 ### 4) крон скрипт с защитой от мультизапуска
