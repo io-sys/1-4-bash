@@ -1,0 +1,2 @@
+* * * * *  bash /opt/watchdog.sh nginx >/tmp/cron1.log 2>&1 || echo "Failed" | mail -s "nginx doesnt work" root
+0 * * * *  bash /opt/backup_trap.sh >/tmp/cron2.log 2>&1 || echo "Failed" | mail -s "etc-home-usr backing up is fail" root
