@@ -1,5 +1,5 @@
 ### 1+2) Скрипт watchdog с перезагрузкой процесса/сервиса; watchdog с отсылкой емэйла
-Файлы в репозитории: `watchdog.sh`; var-spool-cron-root
+Файлы в репозитории: `watchdog.sh`; `var-spool-cron-root`
 
 **watchdog.sh** скрипт, который запускается каждую минуту по `cron` (`/var/spool/cron/root` файл в репозитории `var-spool-cron-root`).
 Как работает скрипт, логика:
