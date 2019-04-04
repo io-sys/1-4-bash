@@ -85,7 +85,7 @@ cat /var/log/nginx/access.log | awk 'BEGIN {print "№  ip  -HTTP 404 WHANT TO F
 [root@linuxbash vagrant]#
 ```
 
-> **2 - скорость ответа, выявление быстрых - медленных запросов/**
+> **2 - скорость ответа, выявление быстрых - медленных запросов.**
 Отчет строиться по возрастанию ответа от сервера, самые быстрые ответы вверху, самые медленные ответы внизу.
 ```php
 cat /var/log/nginx/access.log | awk 'BEGIN {print "Query request time"} $25>0.000 {print $25}' | sort |  uniq |  cat -n
