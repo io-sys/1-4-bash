@@ -4,10 +4,12 @@
 2) если сервис работает, всё в порядке, скрипт напишет `$1 is Active`
 
 ###### Пример: перезапуск или проверка статуса сервиса nginx
+```php
  ./watchdog.sh nginx
+```
 
 
-php`
+
 crontab -l
 * * * * *  bash /opt/watchdog.sh nginx >/tmp/cron1.log 2>&1 || echo "Failed" | mail -s "nginx doesnt work" root
 `
