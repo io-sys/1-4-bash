@@ -69,12 +69,12 @@ Service nginx is down and now will be started.
 https://codedepth.wordpress.com/2017/05/04/nginx-request-time/
 
 ###### Решение
-> ** 1 - На взлом, когда хакеры ищут .xml **
+> **1 - На взлом, когда хакеры ищут .xml**
 
 ```php
 cat /var/log/nginx/access.log | awk 'BEGIN {print "№  ip  -HTTP 404 WHANT TO FINDE XML-"} $9==404 && index($7,".xml")>0{print NR " " $1$7 " - " $4$5}'
 ```
-> ** Результат **
+> **Результат**
 ```php
 [root@linuxbash vagrant]# cat /var/log/nginx/access.log | awk 'BEGIN {print "№  ip  -HTTP 404 WHANT TO FINDE XML-"} $9==404 && index($7,".xml")>0{print NR " " $1$7 " - " $4$5}'
 №  ip  -HTTP 404 WHANT TO FINDE XML-
