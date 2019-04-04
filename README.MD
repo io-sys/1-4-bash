@@ -8,11 +8,11 @@
  ./watchdog.sh nginx
 ```
 
-
-
+cron
+```php
 crontab -l
 * * * * *  bash /opt/watchdog.sh nginx >/tmp/cron1.log 2>&1 || echo "Failed" | mail -s "nginx doesnt work" root
-`
+```php
 
 
 3) анализ логов веб сервера/security лога - (на взлом/скорость ответа/выявление быстрых - медленных запросов, анализ IP адресов и кол-ва запросов от них)
