@@ -6,7 +6,7 @@
 1) Когда сервис остановлен, скрипт его попытается запустить, если неудача запуска, тогда отправляется `e-mail` с предупрежденим `root`(-у).
 2) Если сервис работает и всё в порядке, скрипт напишет `$1 is Active`, когда скрипт запущен вручную, по `cron` процес проверки пройдет тихо.
 
-**cat /opt/watchdog.sh**
+> **cat /opt/watchdog.sh**
 ```php
 Скрипт #!/usr/bin/env bash  lines () {
 pid1=0
@@ -31,7 +31,7 @@ fi
 
 lines $1
 ```
-**cron**
+> **cron**
 ```php
 crontab -l
 * * * * *  bash /opt/watchdog.sh nginx >/tmp/cron1.log 2>&1 || echo "Failed" | mail -s "nginx doesnt work" root
