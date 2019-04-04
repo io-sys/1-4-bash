@@ -1,4 +1,6 @@
 ### 1+2) Скрипт watchdog с перезагрузкой процесса/сервиса; watchdog с отсылкой емэйла
+Файлы в репозитории: `watchdog.sh`; var-spool-cron-root
+
 **watchdog.sh** скрипт, который запускается каждую минуту по `cron` (`/var/spool/cron/root` файл в репозитории `var-spool-cron-root`).
 Как работает скрипт, логика:
 1) Когда сервис остановлен, скрипт его попытается запустить, если неудача запуска, тогда отправляется `e-mail` с предупрежденим `root`(-у).
@@ -8,6 +10,20 @@
 watchdog.sh
 ```php
  ./watchdog.sh nginx
+```
+ Имя сервиса задается в первом параметре.
+```php
+[root@linuxbash opt]# ./watchdog.sh
+No one parameters got the script. Service name empty.
+[root@linuxbash opt]# ./watchdog.sh nginx
+Service nginx: is Active.
+```
+Тест, остановим nginx и запустим скрипт.
+```php
+[root@linuxbash opt]# systemctl stop nginx
+[root@linuxbash opt]# ./watchdog.sh nginx
+Service nginx is down and now will be started.
+[root@linuxbash opt]#
 ```
 cron
 ```php
