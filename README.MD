@@ -117,6 +117,44 @@ Quantity queries from ip addresses
 ---
 ### 4) Резервное копирование по расписанию, скрипт для cron + защита от мультизапуска
 Файлы в репозитории: `./backup_trap.sh`; `var-spool-cron-root`
+Для резервного копирования были выбраны каталоги: `/usr`, `/etc` и `/home`
+
+> **cat /opt/backup_trap.sh**
+```php
+#!/usr/bin/env bash
+
+lockfile=/tmp/lockfile_etcusrhome_ziptask
+
+if ( set -o noclobber; echo "$$" > "$lockfile") 2> /dev/null;
+then
+   trap 'rm -f "$lockfile"; exit $?' INT TERM EXIT
+     # --- Code start.
+     tar -cvvzf /var/bkp/bkp-etc--file-$(date +%Y-%m-%d--%H-%M).tar.gz /etc
+     tar -cvvzf /var/bkp/bkp-usr--file-$(date +%Y-%m-%d--%H-%M).tar.gz /usr
+     tar -cvvzf /var/bkp/bkp-home-file-$(date +%Y-%m-%d--%H-%M).tar.gz /home
+     # --- Code end.
+     rm -f "$lockfile"
+   trap - INT TERM EXIT
+else
+   echo "Failed to acquire lockfile: $lockfile."
+   echo "Held by $(cat $lockfile)"
+fi
+```
+> **Результат**
+```php
+[root@linuxbash opt]# ./backup_trap.sh
+Failed to acquire lockfile: /tmp/lockfile_etcusrhome_ziptask.
+Held by 4607
+[root@linuxbash bkp]# cat /tmp/lockfile_etcusrhome_ziptask
+4607
+[root@linuxbash bkp]# ll -h
+total 313M
+-rw-r--r--. 1 root root 9.5M Apr  4 19:15 bkp-etc--file-2019-04-04--19-15.tar.gz
+-rw-r--r--. 1 root root 1.8K Apr  4 19:16 bkp-home-file-2019-04-04--19-16.tar.gz
+-rw-r--r--. 1 root root 304M Apr  4 19:16 bkp-usr--file-2019-04-04--19-15.tar.gz
+[root@linuxbash bkp]#
+```
+
 
 ---
 ### 5) любой скрипт на ваше усмотрение
