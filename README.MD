@@ -68,6 +68,22 @@ Service nginx is down and now will be started.
 Для выявления быстрых и медленных запросов были добавлены в файл конфигурации `/etc/nginx.conf` изменения. Создан дополнительный формат лога `main_req`, к уже существующему предустановленному `main` , в котором добавлено поле `$request_time` самой последней записью файла лога.
 https://codedepth.wordpress.com/2017/05/04/nginx-request-time/
 
+###### Решение
+> ** 1 - На взлом, когда хакеры ищут .xml **
+
+```php
+cat /var/log/nginx/access.log | awk 'BEGIN {print "№  ip  -HTTP 404 WHANT TO FINDE XML-"} $9==404 && index($7,".xml")>0{print NR " " $1$7 " - " $4$5}'
+```
+> ** Результат **
+```php
+[root@linuxbash vagrant]# cat /var/log/nginx/access.log | awk 'BEGIN {print "№  ip  -HTTP 404 WHANT TO FINDE XML-"} $9==404 && index($7,".xml")>0{print NR " " $1$7 " - " $4$5}'
+№  ip  -HTTP 404 WHANT TO FINDE XML-
+48 10.10.11.20/index.xml - [03/Apr/2019:19:34:51+0000]
+50 10.10.11.20/admin.xml - [03/Apr/2019:20:01:21+0000]
+51 10.10.11.20/list.xml - [03/Apr/2019:20:01:44+0000]
+52 10.10.11.20/sale.xml - [03/Apr/2019:20:01:55+0000]
+[root@linuxbash vagrant]#
+```
 
 
 ---
