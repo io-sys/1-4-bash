@@ -33,18 +33,16 @@ fi
 
 lines $1
 ```
-> **cron**
+> **crontab -l**
 ```php
-crontab -l
 * * * * *  bash /opt/watchdog.sh nginx >/tmp/cron1.log 2>&1 || echo "Failed" | mail -s "nginx doesnt work" root
 ```
 
 ###### Пример: перезапуск или проверка статуса сервиса nginx
-watchdog.sh
-```php
- ./watchdog.sh nginx
-```
- Имя сервиса задается в первом параметре.
+
+> **./watchdog.sh nginx**
+
+Имя сервиса задается в первом параметре.
 ```php
 [root@linuxbash opt]# ./watchdog.sh
 No one parameters got the script. Service name empty.
