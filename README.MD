@@ -8,7 +8,7 @@
 
 > **cat /opt/watchdog.sh**
 ```php
-Скрипт #!/usr/bin/env bash  lines () {
+#!/usr/bin/env bash  lines () {
 pid1=0
 serv=$1
 
