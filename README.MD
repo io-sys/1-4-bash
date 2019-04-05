@@ -2,7 +2,7 @@
 Файлы в репозитории: `watchdog.sh`; `var-spool-cron-root`
 
 **watchdog.sh** скрипт, который запускается каждую минуту по `cron` (`/var/spool/cron/root` файл в репозитории `var-spool-cron-root`).
-Как работает скрипт, логика:
+Алгоритм работы скрипта:
 1) Когда сервис остановлен, скрипт его попытается запустить, если неудача запуска, тогда отправляется `e-mail` с предупрежденим `root`(-у).
 2) Если сервис работает и всё в порядке, скрипт напишет `$1 is Active`, когда скрипт запущен вручную, по `cron` процес проверки пройдет тихо.
 
@@ -154,7 +154,32 @@ total 313M
 -rw-r--r--. 1 root root 304M Apr  4 19:16 bkp-usr--file-2019-04-04--19-15.tar.gz
 [root@linuxbash bkp]#
 ```
-
-
+> **crontab -l**
+```php
+[root@linuxbash bkp]# crontab -l
+* * * * *  bash /opt/watchdog.sh nginx >/tmp/cron1.log 2>&1 || echo "Failed" | mail -s "nginx doesnt work" root
+0 * * * *  bash /opt/backup_trap.sh >/tmp/cron2.log 2>&1 || echo "Failed" | mail -s "etc-home-usr backing up is fail" root
+[root@linuxbash bkp]#
+```
 ---
-### 5) любой скрипт на ваше усмотрение
+### 5) любой скрипт на ваше усмотрение - Пример с использованием команд sed и find.
+Файлы в репозитории: `shhead.sh` 
+2(-я) параметрами скрипта `shhead.sh` пользователь указывает: 
+$1 директорию, в которой скрипт будет искать `find` файлы по
+$2 расширению, которое укажет пользователь во втором параметре.
+- скрипт найдет `find` все файлы в директории $1 отфильтрованные по расширению из параметра $2, например, `.sh` ,  и в консоль будут выведено имя файла и первыe 10 строк из него. Имя каждого скрипта/файла, при выводе будет раскрашено в фиолетовый цвет, для читаемости.
+
+> **cat ./shhead.sh**
+```php
+[root@linuxbash opt]# cat ./shhead.sh
+#!/usr/bin/env bash
+#
+# Show first 10 strings form founded file in dir.
+# ./script.sh /dir .sh
+# $1 - dir
+# $2 - extension with dot (.) for example:    .sh   .txt  .text   .conf
+
+ for i in $(find $1 -name "*$2"); do echo -e "\e[35m $i\e[0m"; sed 10q $i;done
+```
+
+
