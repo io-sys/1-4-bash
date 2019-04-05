@@ -182,5 +182,5 @@ $2 расширению, которое укажет пользователь в
 
  for i in $(find $1 -name "*$2"); do echo -e "\e[35m $i\e[0m"; sed 10q $i;done
 ```
-
-
+Пример запуска скрипта.
+> **./shhead.sh /usr/scripts/ .sh**
